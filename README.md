@@ -46,7 +46,7 @@ INSERT INTO LINTR (
   NULL, 
   0, 
   'ann', 
-  1, 
+  GETDATE(), 
   'ann', 
   GETDATE(), 
   NULL, 
