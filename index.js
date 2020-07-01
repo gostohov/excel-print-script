@@ -54,7 +54,7 @@ const processValue = ((err, res) => {
     const insertQuery = `INSERT INTO LINTR (LINTR_ID, PARENT_ID, STATUS, UIT, UITU, MAKING_TYPE, PROD_DATE, CERT_TYPE, CERT_DOC_NUM, CERT_DOC_DATE, CUSTOMS_COST, COST_C, TAX_C, TNVED10, GTIN, EXT_ART, MARK_ID, USERCRE, DATCRE, USERMOD, DATMOD, ERRCODE, ERRCOMM
     ) VALUES (
       next value for LINTR_SEQ, 
-      1, 
+      664, 
       10, 
       ${escapedMark}, 
       NULL, 

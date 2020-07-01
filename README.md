@@ -29,7 +29,7 @@ INSERT INTO LINTR (
   ERRCOMM
 ) VALUES (
   next value for LINTR_SEQ, 
-  1, 
+  664, 
   10, 
   'сюда код маркировки(скобки нужны)', 
   NULL, 
