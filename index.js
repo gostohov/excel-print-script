@@ -29,6 +29,18 @@ const print = (list, index, bar) => {
   fs.appendFile(config.output, list[index], () => print(list, index + 1, bar));
 }
 
+const escapeString = (value) => {
+  if (typeof value === 'string') {
+    const isnum = /^\d+$/g.test(value);
+    if (!isnum) {
+      value = value.replace(/'/g, "''")
+      value = `'${value}'`
+    }
+  }
+
+  return value;
+}
+
 const processValue = ((err, res) => {
   if (err) throw err;
   const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
@@ -36,19 +48,36 @@ const processValue = ((err, res) => {
   res.forEach((obj,i) => {
     const { pathIndex } = obj;
     delete obj.pathIndex;
-    const values = Object.values(obj);    
-    let insertQuery = 'INSERT INTO KLT_ORDER VALUES ('
-    values.forEach((value, i) => {
-      if (typeof value === 'string') {
-        const isnum = /^\d+$/g.test(value);
-        if (!isnum) {
-          value = value.replace(/'/g, "''")
-          value = `'${value}'`
-        }
-      }
-      insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`
-    })
-    insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\nGO\n`;
+    const [mark] = Object.values(obj);
+    const escapedMark = escapeString(`(${mark})`);
+    const slicedMark = escapeString(mark.slice(2, 16));
+    const insertQuery = `INSERT INTO LINTR (LINTR_ID, PARENT_ID, STATUS, UIT, UITU, MAKING_TYPE, PROD_DATE, CERT_TYPE, CERT_DOC_NUM, CERT_DOC_DATE, CUSTOMS_COST, COST_C, TAX_C, TNVED10, GTIN, EXT_ART, MARK_ID, USERCRE, DATCRE, USERMOD, DATMOD, ERRCODE, ERRCOMM
+    ) VALUES (
+      next value for LINTR_SEQ, 
+      1, 
+      10, 
+      ${escapedMark}, 
+      NULL, 
+      NULL, 
+      GETDATE(), 
+      NULL,
+      NULL, 
+      GETDATE(), 
+      0, 
+      0, 
+      0, 
+      NULL, 
+      '${slicedMark}', 
+      NULL, 
+      0, 
+      'ann', 
+      1, 
+      'ann', 
+      GETDATE(),
+      NULL, 
+      NULL
+    );
+    GO\n`;
     insertQueryList.push(insertQuery);
   })
   fs.writeFile(config.output, '', () => {

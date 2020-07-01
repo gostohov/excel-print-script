@@ -3,7 +3,55 @@
 
 # Запрос
 ```sql
-INSERT INTO KLT_ORDER VALUES ('010469030241757421Mlrraa:LZzYAX91002A92YCYbxC9MEGU2Km2G/rz+CF9eRdno1vQgnz9AJvQbHmXfhFSBHiK9eRVTR2hll4cnlOR5P5kPXo8/CMrZ99W/2Q==',50000,0,0,0,'Mlrraa:LZzYAX',Маркировка остатков);
+INSERT INTO LINTR (
+  LINTR_ID, 
+  PARENT_ID, 
+  STATUS, 
+  UIT, 
+  UITU, 
+  MAKING_TYPE, 
+  PROD_DATE, 
+  CERT_TYPE, 
+  CERT_DOC_NUM, 
+  CERT_DOC_DATE, 
+  CUSTOMS_COST, 
+  COST_C, 
+  TAX_C, 
+  TNVED10, 
+  GTIN, 
+  EXT_ART, 
+  MARK_ID, 
+  USERCRE, 
+  DATCRE, 
+  USERMOD, 
+  DATMOD, 
+  ERRCODE, 
+  ERRCOMM
+) VALUES (
+  next value for LINTR_SEQ, 
+  1, 
+  10, 
+  'сюда код маркировки(скобки нужны)', 
+  NULL, 
+  NULL, 
+  GETDATE(), 
+  NULL,
+  NULL, 
+  GETDATE(), 
+  0, 
+  0, 
+  0, 
+  NULL, 
+  'вот сюда обрезать gtin', 
+  NULL, 
+  0, 
+  'ann', 
+  1, 
+  'ann', 
+  GETDATE(), 
+  NULL, 
+  NULL
+);
 GO
 ```
 
@@ -16,10 +64,9 @@ GO
 
 ## Запуск скрипта:
 - В терминале перейти в директорию скрипта
-- Ввести команду: `node index.js ../left ../import -o ./merger-test.text  -- "Маркировка остатков" "Импорт"`
-  - `../left` и `../import` - пути к папкам с excel-файлами. Папок может быть сколько угодно, главное написать пути к ним последовательно. Можно прописать как названия конкретных файлов, так и названия папок с n-количеством файлов.
+- Ввести команду: `node index.js ../left ~/Downloads/left.xlsx -o ./merger-test.text`
+  - `../left` и `~/Downloads/left.xlsx` - пути к папкам с excel-файлами. Папок может быть сколько угодно, главное написать пути к ним последовательно. Можно прописать как названия конкретных файлов, так и названия папок с n-количеством файлов.
   - `-o ./merger-test.text` - после флага `-o` указывается путь к файлу, в который будет записан результат отработки скрипта
-  - `--` - после этого флага указывается название последней колонки. Этот флаг опциональный, им можно не пользоваться, в том случае, если вам не нужны дополнительные колонки. Порядок названий последних колонок должен совпадать с порядком путей к папкам. 
 
 ## Установка среды на Windows
 - https://nodejs.org/dist/v12.18.1/node-v12.18.1-x86.msi
