@@ -20,7 +20,7 @@ const runShell = (callback) => {
 
 const print = (list, index, bar) => {
   bar.update(index);
-  if (index + 1 === list.length) {
+  if (index === list.length) {
     bar.stop();
     console.log('Merging finished')
     return;
