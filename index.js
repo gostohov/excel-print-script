@@ -49,7 +49,7 @@ const processValue = ((err, res) => {
     const { pathIndex } = obj;
     delete obj.pathIndex;
     const [mark] = Object.values(obj);
-    const escapedMark = escapeString(`(${mark})`);
+    const escapedMark = escapeString(`${mark}`);
     const slicedMark = escapeString(mark.slice(2, 16));
     const insertQuery = `INSERT INTO LINTR (LINTR_ID, PARENT_ID, STATUS, UIT, UITU, MAKING_TYPE, PROD_DATE, CERT_TYPE, CERT_DOC_NUM, CERT_DOC_DATE, CUSTOMS_COST, COST_C, TAX_C, TNVED10, GTIN, EXT_ART, MARK_ID, USERCRE, DATCRE, USERMOD, DATMOD, ERRCODE, ERRCOMM
     ) VALUES (
