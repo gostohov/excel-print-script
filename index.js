@@ -69,7 +69,7 @@ const processValue = ((err, res) => {
       NULL, 
       '${slicedMark}', 
       NULL, 
-      (SELECT mark_id FROM rmark WHERE uit = ${escapeString(mark.slice(0, 31))}), 
+      (SELECT markid FROM rmark WHERE uit = ${escapeString(mark.slice(0, 31))}), 
       'ann', 
       GETDATE(), 
       'ann', 
