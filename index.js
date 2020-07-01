@@ -46,9 +46,9 @@ const processValue = ((err, res) => {
           value = `'${value}'`
         }
       }
-      insertQuery += `${value},`
+      insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`
     })
-    insertQuery += `${ pathIndex ? config.lastWords[pathIndex] : '' });\nGO\n`;
+    insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\nGO\n`;
     insertQueryList.push(insertQuery);
   })
   fs.writeFile(config.output, '', () => {
