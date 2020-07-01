@@ -44,7 +44,7 @@ INSERT INTO LINTR (
   NULL, 
   'вот сюда обрезать gtin', 
   NULL, 
-  0, 
+  SELECT mark_id FROM rmark WHERE uit = 010469030241757421Mlrraa, 
   'ann', 
   GETDATE(), 
   'ann', 
