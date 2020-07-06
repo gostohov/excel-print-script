@@ -3,54 +3,30 @@
 
 # Запрос
 ```sql
-INSERT INTO LINTR (
-  LINTR_ID, 
-  PARENT_ID, 
-  STATUS, 
-  UIT, 
-  UITU, 
-  MAKING_TYPE, 
-  PROD_DATE, 
-  CERT_TYPE, 
-  CERT_DOC_NUM, 
-  CERT_DOC_DATE, 
-  CUSTOMS_COST, 
-  COST_C, 
-  TAX_C, 
-  TNVED10, 
-  GTIN, 
-  EXT_ART, 
-  MARK_ID, 
+insert into IN_CITEM (
+  IN_ITEMID,
+  STATUS,
+  GTIN,
+  EXTART,
+  NAME, 
   USERCRE, 
   DATCRE, 
-  USERMOD, 
-  DATMOD, 
-  ERRCODE, 
-  ERRCOMM
-) VALUES (
-  next value for LINTR_SEQ, 
-  664, 
-  10, 
-  'сюда код маркировки(скобки нужны)', 
-  NULL, 
-  NULL, 
-  GETDATE(), 
-  NULL,
-  NULL, 
-  GETDATE(), 
+  TNVED10, 
+  articul,
+  brand,
+  inn
+) values (
+  next value FOR IN_CITEM_SEQ, 
   0, 
-  0, 
-  0, 
-  NULL, 
-  'вот сюда обрезать gtin', 
-  NULL, 
-  (SELECT markid FROM rmark WHERE uit = 010469030241757421Mlrraa), 
-  'ann', 
+  gtin, 
+  extart, 
+  name,
+  'Ann', 
   GETDATE(), 
-  'ann', 
-  GETDATE(), 
-  NULL, 
-  NULL
+  tnved10, 
+  articul, 
+  'Faberlic',
+  5001026970
 );
 GO
 ```

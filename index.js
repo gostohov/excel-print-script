@@ -48,34 +48,31 @@ const processValue = ((err, res) => {
   res.forEach((obj,i) => {
     const { pathIndex } = obj;
     delete obj.pathIndex;
-    const [mark] = Object.values(obj);
-    const escapedMark = escapeString(`${mark.slice(0, 31)}`);
-    const slicedMark = escapeString(mark.slice(2, 16));
-    const insertQuery = `INSERT INTO LINTR (LINTR_ID, PARENT_ID, STATUS, UIT, UITU, MAKING_TYPE, PROD_DATE, CERT_TYPE, CERT_DOC_NUM, CERT_DOC_DATE, CUSTOMS_COST, COST_C, TAX_C, TNVED10, GTIN, EXT_ART, MARK_ID, USERCRE, DATCRE, USERMOD, DATMOD, ERRCODE, ERRCOMM
-    ) VALUES (
-      next value for LINTR_SEQ, 
-      664, 
-      10, 
-      ${escapedMark}, 
-      NULL, 
-      NULL, 
-      GETDATE(), 
-      NULL,
-      NULL, 
-      GETDATE(), 
+    const [articul, name, tnved10, extart, gtin, brand, inn] = Object.values(obj).map(v => escapeString(v));
+    const insertQuery = `insert into IN_CITEM (
+      IN_ITEMID,
+      STATUS,
+      GTIN,
+      EXTART,
+      NAME, 
+      USERCRE, 
+      DATCRE, 
+      TNVED10, 
+      articul,
+      brand,
+      inn
+    ) values (
+      next value FOR IN_CITEM_SEQ, 
       0, 
-      0, 
-      0, 
-      NULL, 
-      '${slicedMark}', 
-      NULL, 
-      (SELECT markid FROM rmark WHERE uit = ${escapeString(mark.slice(0, 31))}), 
-      'ann', 
+      ${gtin}, 
+      ${extart}, 
+      ${name},
+      'Ann', 
       GETDATE(), 
-      'ann', 
-      GETDATE(),
-      NULL, 
-      NULL
+      '${tnved10}', 
+      '${articul}', 
+      'Faberlic',
+      5001026970
     );
     GO\n`;
     insertQueryList.push(insertQuery);
