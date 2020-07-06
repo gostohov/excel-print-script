@@ -33,15 +33,18 @@ def calculateInsertQuery(headers, row, pathIndex):
   return orderRow
 
 def processFile(fullFileName, pathIndex):
-  wb = xlrd.open_workbook(fullFileName)
-  sheet = wb.sheet_by_index(0)
+  wb = xlrd.open_workbook(fullFileName, on_demand=True)
+  sheetCount = len(wb.sheet_names())
+  for sheetIndex in range(sheetCount):
+    sheet = wb.sheet_by_index(1)
 
-  headers = sheet.row_values(0)
-  for i in range(sheet.nrows):
-    if i !=0:
-      rowValues = sheet.row_values(i)
-      query = calculateInsertQuery(headers, rowValues, pathIndex)
-      print (json.dumps(query))
+    headers = sheet.row_values(0)
+    for i in range(sheet.nrows):
+      if i !=0:
+        rowValues = sheet.row_values(i)
+        query = calculateInsertQuery(headers, rowValues, pathIndex)
+        print (json.dumps(query))
+  
 
 # MAIN
 for pathIndex, path in enumerate(pathList):
