@@ -36,7 +36,7 @@ def processFile(fullFileName, pathIndex):
   wb = xlrd.open_workbook(fullFileName, on_demand=True)
   sheetCount = len(wb.sheet_names())
   for sheetIndex in range(sheetCount):
-    sheet = wb.sheet_by_index(1)
+    sheet = wb.sheet_by_index(sheetIndex)
 
     headers = sheet.row_values(0)
     for i in range(sheet.nrows):
