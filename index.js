@@ -20,13 +20,25 @@ const runShell = (callback) => {
 
 const print = (list, index, bar) => {
   bar.update(index);
-  if (index + 1 === list.length) {
+  if (index === list.length) {
     bar.stop();
     console.log('Merging finished')
     return;
   }
 
   fs.appendFile(config.output, list[index], () => print(list, index + 1, bar));
+}
+
+const escapeString = (value) => {
+  if (typeof value === 'string') {
+    const isnum = /^\d+$/g.test(value);
+    if (!isnum) {
+      value = value.replace(/'/g, "''")
+      value = `'${value}'`
+    }
+  }
+
+  return value;
 }
 
 const processValue = ((err, res) => {
@@ -36,18 +48,9 @@ const processValue = ((err, res) => {
   res.forEach((obj,i) => {
     const { pathIndex } = obj;
     delete obj.pathIndex;
-    const values = Object.values(obj);    
+    const values = Object.values(obj).map(v => escapeString(v));    
     let insertQuery = 'INSERT INTO KLT_ORDER VALUES ('
-    values.forEach((value, i) => {
-      if (typeof value === 'string') {
-        const isnum = /^\d+$/g.test(value);
-        if (!isnum) {
-          value = value.replace(/'/g, "''")
-          value = `'${value}'`
-        }
-      }
-      insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`
-    })
+    values.forEach((value, i) => insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`)
     insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\nGO\n`;
     insertQueryList.push(insertQuery);
   })
