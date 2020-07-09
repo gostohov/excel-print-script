@@ -3,14 +3,28 @@
 
 # Запрос
 ```sql
-INSERT INTO KLT_ORDER VALUES (
-  '010469030241757421Mlrraa:LZzYAX91002A92YCYbxC9MEGU2Km2G/rz+CF9eRdno1vQgnz9AJvQbHmXfhFSBHiK9eRVTR2hll4cnlOR5P5kPXo8/CMrZ99W/2Q==',
-  50000,
-  0,
-  0,
-  0,
-  'Mlrraa:LZzYAX',
-  Маркировка остатков
+INSERT INTO RSTOCK (
+  STOCKID, 
+  GTIN, 
+  ENTITYID, 
+  QTY_EMIT, 
+  QTY_INTR, 
+  QTY_SHIP, 
+  USERCRE, 
+  DATCRE, 
+  USERMOD, 
+  DATMOD
+) VALUES (
+  next value for RSTOCK_SEQ, 
+  (gtin- только уникальный, без повторений, сделать обрезку с 3 символа включительно в марке по 14 символ включительно), 
+  241, 
+  0, 
+  (кол-во марок, в составе которых такой же gtin, проверка с 3 символа в марке по 14 символ включительно), 
+  0, 
+  'ann', 
+  GETDATE(), 
+  NULL, 
+  NULL
 );
 GO
 ```

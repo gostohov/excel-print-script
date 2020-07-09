@@ -43,17 +43,58 @@ const escapeString = (value) => {
 
 const processValue = ((err, res) => {
   if (err) throw err;
-  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-  const insertQueryList = [];
-  res.forEach((obj,i) => {
-    const { pathIndex } = obj;
-    delete obj.pathIndex;
-    const values = Object.values(obj).map(v => escapeString(v));    
-    let insertQuery = 'INSERT INTO KLT_ORDER VALUES ('
-    values.forEach((value, i) => insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`)
-    insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\nGO\n`;
-    insertQueryList.push(insertQuery);
+
+  console.log('Start unique gtin search...');
+  const uniqueGtinList = [...new Set(res.map((item, i) => {
+    const [mark] = Object.values(item);
+    return mark.slice(2, 16);
+  }))];
+  console.log(`End unique gtin search. Found ${uniqueGtinList.length} unique gtin.`);
+
+  const countBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  console.log('Start counting gtin quantity...');
+  countBar.start(uniqueGtinList.length, 0);
+  const resList = uniqueGtinList.map((gtin, i) => {
+    countBar.update(i);
+    return {
+      gtin,
+      count:  res.filter(item => {
+                const [mark] = Object.values(item);
+                return mark.includes(gtin);
+              }).length
+    }
   })
+  countBar.stop();
+
+  console.log('Start creating insert query list...');
+  const insertQueryList = resList.map(({gtin, count}) => {
+    return `INSERT INTO RSTOCK (
+      STOCKID, 
+      GTIN, 
+      ENTITYID, 
+      QTY_EMIT, 
+      QTY_INTR, 
+      QTY_SHIP, 
+      USERCRE, 
+      DATCRE, 
+      USERMOD, 
+      DATMOD
+    ) VALUES (
+      next value for RSTOCK_SEQ, 
+      '${escapeString(gtin)}', 
+      241, 
+      0, 
+      ${count},
+      0, 
+      'ann', 
+      GETDATE(), 
+      NULL, 
+      NULL
+    );
+    GO\n`
+  });
+
+  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   fs.writeFile(config.output, '', () => {
     console.log('Start printing...');
     bar.start(insertQueryList.length, 0);

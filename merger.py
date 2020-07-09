@@ -6,24 +6,10 @@ import json
 
 pathList = sys.argv[1:]
 refScheme = [
-  'Код_Маркировки',
-  'Артикул',
-  'GTIN_Выч',
-  'GTIN',
-  'Серия_Выч',
-  'Серия'
+  'mark'
 ]
 
 def calculateInsertQuery(headers, row, pathIndex):
-  # Чтобы не первая колонка всегда называлась одинаково
-  headers[0] = 'Код_Маркировки'
-  for i, h in enumerate(headers):
-    if h == 'Серийный':
-      headers[i] = 'Серия'
-
-    if h == 'Серийный_Выч':
-      headers[i] = 'Серия_Выч'
-
   orderRow = {}
 
   for idx, colName in enumerate(refScheme):
