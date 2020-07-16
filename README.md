@@ -12,7 +12,6 @@ INSERT INTO KLT_ORDER VALUES (
   'Mlrraa:LZzYAX',
   Маркировка остатков
 );
-GO
 ```
 
 # Инструкция и Требования:

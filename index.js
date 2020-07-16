@@ -51,7 +51,7 @@ const processValue = ((err, res) => {
     const values = Object.values(obj).map(v => escapeString(v));    
     let insertQuery = 'INSERT INTO KLT_ORDER VALUES ('
     values.forEach((value, i) => insertQuery += `${value}${i < values.length - 1 ? ',' : ''}`)
-    insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\nGO\n`;
+    insertQuery += `${ config.lastWords.length ? `, ${config.lastWords[pathIndex]}` : '' });\n`;
     insertQueryList.push(insertQuery);
   })
   fs.writeFile(config.output, '', () => {
